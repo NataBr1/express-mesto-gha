@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const {BAD_REQ, NOT_FOUND, DEFAULT_ERROR} = require ('./errors');
+const { BAD_REQ, NOT_FOUND, DEFAULT_ERROR } = require('./errors');
 
 const getUsers = (req, res) => {
   User.find({})
@@ -13,12 +13,13 @@ const getUsersById = (req, res) => {
     .orFail(() => new Error('Not Found'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
+      // добавить проверку корректности ид
       if (err.message === 'Not Found') {
         res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
         res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
       }
-    })
+    });
 };
 
 const createUser = (req, res) => {
@@ -26,10 +27,16 @@ const createUser = (req, res) => {
 
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
-    .catch((err) => res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });
+      } else {
+        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
+      }
+    });
 };
 
-//обновляет профиль
+// обновляет профиль
 const updateProfile = (req, res) => {
   const { name, about } = req.body;
 
@@ -44,25 +51,25 @@ const updateProfile = (req, res) => {
       } else {
         res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
       }
-    })
+    });
 };
 
 // обновляет аватар
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .orFail(() => new Error('Not Found'))
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные', err: err.message, stack: err.stack});
+        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });
       } else if (err.message === 'Not Found') {
-        res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден', err: err.message, stack: err.stack});
+        res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
-        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack });
+        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
       }
-    })
+    });
 };
 
 module.exports = {
@@ -70,5 +77,5 @@ module.exports = {
   getUsersById,
   createUser,
   updateProfile,
-  updateAvatar
+  updateAvatar,
 };
