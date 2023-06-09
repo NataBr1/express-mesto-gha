@@ -2,19 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes');
 
+// eslint-disable-next-line no-undef
+const { PORT = 3000 } = process.env;
 const app = express();
-
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
-
 app.use(express.json());
-
 app.use(router);
 
-app.listen(3000, () => {
+app.use((req, res, next) => {
+  req.user = {
+    _id: '6480ea3c724559b2a7817927'
+  };
+
+  next();
+});
+
+mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+
+app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log('Слушаю порт 3000!!!');
+  console.log(`Слушаю порт ${PORT}`);
 });
