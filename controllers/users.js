@@ -1,9 +1,10 @@
 const User = require('../models/user');
+const {BAD_REQ, NOT_FOUND, DEFAULT_ERROR} = require ('./errors');
 
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch((err) => res.status(500).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack }));
+    .catch((err) => res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' }));
 };
 
 const getUsersById = (req, res) => {
@@ -13,9 +14,9 @@ const getUsersById = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.message === 'Not Found') {
-        res.status(404).send({ message: 'Запрашиваемый пользователь не найден', err: err.message, stack: err.stack});
+        res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
-        res.status(500).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack });
+        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
       }
     })
 };
@@ -25,7 +26,7 @@ const createUser = (req, res) => {
 
   User.create({ name, about, avatar })
     .then((user) => res.status(201).send(user))
-    .catch((err) => res.status(500).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack }));
+    .catch((err) => res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' }));
 };
 
 //обновляет профиль
@@ -37,11 +38,11 @@ const updateProfile = (req, res) => {
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные', err: err.message, stack: err.stack});
+        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });
       } else if (err.message === 'Not Found') {
-        res.status(404).send({ message: 'Запрашиваемый пользователь не найден', err: err.message, stack: err.stack});
+        res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
-        res.status(500).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack });
+        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
       }
     })
 };
@@ -55,11 +56,11 @@ const updateAvatar = (req, res) => {
     .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: 'Переданы некорректные данные', err: err.message, stack: err.stack});
+        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные', err: err.message, stack: err.stack});
       } else if (err.message === 'Not Found') {
-        res.status(404).send({ message: 'Запрашиваемый пользователь не найден', err: err.message, stack: err.stack});
+        res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден', err: err.message, stack: err.stack});
       } else {
-        res.status(500).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack });
+        res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию', err: err.message, stack: err.stack });
       }
     })
 };
