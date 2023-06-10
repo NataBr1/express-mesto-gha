@@ -4,7 +4,7 @@ const { BAD_REQ, NOT_FOUND, DEFAULT_ERROR } = require('./errors');
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch((err) => res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' }));
+    .catch(() => res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' }));
 };
 
 const getUsersById = (req, res) => {
@@ -42,7 +42,7 @@ const updateProfile = (req, res) => {
 
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail(() => new Error('Not Found'))
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });
@@ -60,7 +60,7 @@ const updateAvatar = (req, res) => {
 
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .orFail(() => new Error('Not Found'))
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });

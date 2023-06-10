@@ -5,5 +5,5 @@ const DEFAULT_ERROR = 500;
 module.exports = {
   BAD_REQ,
   NOT_FOUND,
-  DEFAULT_ERROR
-}
+  DEFAULT_ERROR,
+};
