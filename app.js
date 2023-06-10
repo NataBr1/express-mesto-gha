@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes');
-const { NOT_FOUND } = require('./controllers/errors');
+const { NOT_FOUND } = require('./utils/errors');
 
 // eslint-disable-next-line no-undef
 const { PORT = 3000 } = process.env;
