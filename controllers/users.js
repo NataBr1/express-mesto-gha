@@ -13,8 +13,9 @@ const getUsersById = (req, res) => {
     .orFail(() => new Error('Not Found'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      // добавить проверку корректности ид
-      if (err.message === 'Not Found') {
+      if (err.name === 'CastError') {
+        res.status(BAD_REQ).send({ message: 'Переданы некорректные данные' });
+      } else if (err.message === 'Not Found') {
         res.status(NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       } else {
         res.status(DEFAULT_ERROR).send({ message: 'Ошибка по умолчанию' });
