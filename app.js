@@ -1,15 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const { celebrate, Joi } = require('celebrate');
 const router = require('./routes');
 const auth = require('./middlewares/auth');
+const url = require('./utils/const_url');
 const NotFoundError = require('./errors/not-found-err');
 const { createUser } = require('./controllers/users');
 const { login } = require('./controllers/users');
-const {
-  validationLogin,
-  validationCreateUser,
-} = require('./middlewares/validations');
+// const {
+//   validationLogin,
+//   validationCreateUser,
+// } = require('./middlewares/validations');
 const errorHandler = require('./middlewares/error');
 
 // eslint-disable-next-line no-undef
@@ -19,8 +21,25 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.post('/signin', validationLogin, login);
-app.post('/signup', validationCreateUser, createUser);
+router.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
+
+router.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().regex(url),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
+
+// app.post('/signin', validationLogin, login);
+// app.post('/signup', validationCreateUser, createUser);
 app.use(auth);
 app.use(router);
 app.use('*', (req, res, next) => {

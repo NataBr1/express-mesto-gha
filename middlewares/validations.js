@@ -2,22 +2,22 @@ const { celebrate, Joi } = require('celebrate');
 
 const url = /^(https?:\/\/)(www\.)?([a-z1-9-]{2,}\.)+[a-z]{2,}\/?[a-z0-9-._~:/?#[\]@!$&'()*+,;=]*/i;
 
-const validationCreateUser = celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(url),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-});
+// const validationCreateUser = celebrate({
+//   body: Joi.object().keys({
+//     name: Joi.string().min(2).max(30),
+//     about: Joi.string().min(2).max(30),
+//     avatar: Joi.string().regex(url),
+//     email: Joi.string().required().email(),
+//     password: Joi.string().required(),
+//   }),
+// });
 
-const validationLogin = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-});
+// const validationLogin = celebrate({
+//   body: Joi.object().keys({
+//     email: Joi.string().required().email(),
+//     password: Joi.string().required(),
+//   }),
+// });
 
 // const validationUpdateProfile = celebrate({
 //   body: Joi.object().keys({
@@ -52,8 +52,8 @@ const validationCardId = celebrate({
 });
 
 module.exports = {
-  validationLogin,
-  validationCreateUser,
+  // validationLogin,
+  // validationCreateUser,
   // validationUpdateProfile,
   // validationUpdateAvatar,
   // validationUsersId,
