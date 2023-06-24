@@ -4,6 +4,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad_request_err');
 const WrongDataError = require('../errors/wrong_data_err');
+const DuplicateError = require('../errors/wrong_data_err');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -31,7 +32,13 @@ const createUser = (req, res, next) => {
     .then((hashedPassword) => {
       User.create({ ...req.body, password: hashedPassword })
         .then((user) => res.status(201).send({ data: user }))
-        .catch(next);
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            throw new BadRequestError('Переданы некорректные данные');
+          } else if (err.code === 11000) {
+            throw new DuplicateError('Пользователь с таким email уже существует');
+          }
+        });
     })
     .catch(next);
 };
