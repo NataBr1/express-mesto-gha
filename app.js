@@ -1,17 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const router = require('./routes');
 const auth = require('./middlewares/auth');
 const url = require('./utils/const_url');
 const NotFoundError = require('./errors/not-found-err');
 const { createUser } = require('./controllers/users');
 const { login } = require('./controllers/users');
-// const {
-//   validationLogin,
-//   validationCreateUser,
-// } = require('./middlewares/validations');
 const errorHandler = require('./middlewares/error');
 
 // eslint-disable-next-line no-undef
@@ -38,13 +34,12 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// app.post('/signin', validationLogin, login);
-// app.post('/signup', validationCreateUser, createUser);
 app.use(auth);
 app.use(router);
 app.use('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
+app.use(errors());
 app.use(errorHandler);
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');

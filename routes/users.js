@@ -10,12 +10,6 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-// const {
-//   validationUpdateProfile,
-//   validationUpdateAvatar,
-//   validationUsersId,
-// } = require('../middlewares/validations');
-
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
 
@@ -37,9 +31,5 @@ router.patch('/me/avatar', celebrate({
     avatar: Joi.string().required().regex(url),
   }),
 }), updateAvatar);
-
-// router.get('/:userId', validationUsersId, getUsersById);
-// router.patch('/me', validationUpdateProfile, updateProfile);
-// router.patch('/me/avatar', validationUpdateAvatar, updateAvatar);
 
 module.exports = router;
