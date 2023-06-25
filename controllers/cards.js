@@ -54,8 +54,8 @@ const likeCard = (req, res, next) => {
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Передан несуществующий _id карточки');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 // Удаление лайка
@@ -75,8 +75,8 @@ const dislikeCard = (req, res, next) => {
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Передан несуществующий _id карточки');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports = {
