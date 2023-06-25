@@ -23,8 +23,8 @@ const getUsersById = (req, res, next) => {
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -38,8 +38,8 @@ const createUser = (req, res, next) => {
           } else if (err.code === 11000) {
             throw new DuplicateError('Пользователь с таким email уже существует');
           }
-        })
-        .catch(next);
+          next(err);
+        });
     });
 };
 
@@ -81,8 +81,8 @@ const getCurrentUser = (req, res, next) => {
       } else if (err.message === 'NotFound') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 // обновляет профиль
@@ -100,8 +100,8 @@ const updateProfile = (req, res, next) => {
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 // обновляет аватар
@@ -119,8 +119,8 @@ const updateAvatar = (req, res, next) => {
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports = {
