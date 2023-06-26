@@ -35,12 +35,13 @@ const createUser = (req, res, next) => {
         .then((user) => res.status(201).send({ data: user }))
         .catch((err) => {
           if (err.code === 11000) {
-            throw new DuplicateError('Пользователь с таким email уже существует');
+            next(new DuplicateError('Пользователь с таким email уже существует'));
           } else if (err.name === 'ValidationError') {
-            throw new BadRequestError('Переданы некорректные данные');
+            next(new BadRequestError('Переданы некорректные данные'));
+          } else {
+            next(err);
           }
-        })
-        .catch(next);
+        });
     });
 };
 
@@ -65,9 +66,9 @@ const login = (req, res, next) => {
           } else {
             throw new WrongDataError('Неверные данные для входа');
           }
-        });
-    })
-    .catch(next);
+        })
+        .catch(next);
+    });
 };
 
 const getCurrentUser = (req, res, next) => {
