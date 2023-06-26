@@ -66,9 +66,9 @@ const login = (req, res, next) => {
           } else {
             throw new WrongDataError('Неверные данные для входа');
           }
-        })
-        .catch(next);
-    });
+        });
+    })
+    .catch(next);
 };
 
 const getCurrentUser = (req, res, next) => {
