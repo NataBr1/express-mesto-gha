@@ -5,6 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad_request_err');
 const WrongDataError = require('../errors/wrong_data_err');
 const DuplicateError = require('../errors/duplicate_err');
+const AuthError = require('../errors/auth_err');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -50,7 +51,7 @@ const login = (req, res, next) => {
   User.findOne({ email })
     .select('+password')
     .orFail(() => {
-      throw new NotFoundError('Запрашиваемый пользователь не найден');
+      throw new AuthError('Необходимо авторизоваться');
     })
     .then((user) => {
       bcrypt.compare(String(password), user.password)
