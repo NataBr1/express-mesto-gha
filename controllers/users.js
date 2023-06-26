@@ -4,7 +4,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad_request_err');
 const WrongDataError = require('../errors/wrong_data_err');
-const DuplicateError = require('../errors/wrong_data_err');
+const DuplicateError = require('../errors/duplicate_err');
 
 const getUsers = (req, res, next) => {
   User.find({})
