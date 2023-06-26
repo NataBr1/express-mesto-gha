@@ -24,7 +24,8 @@ const getUsersById = (req, res, next) => {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
       next(err);
-    });
+    })
+    .catch(next);
 };
 
 const createUser = (req, res, next) => {
