@@ -22,10 +22,10 @@ const getUsersById = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -82,8 +82,9 @@ const getCurrentUser = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'NotFound') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -101,8 +102,9 @@ const updateProfile = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -120,8 +122,9 @@ const updateAvatar = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
