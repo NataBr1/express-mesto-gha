@@ -21,7 +21,7 @@ const getUsersById = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        next(new NotFoundError('Запрашиваемый пользователь не найден'));
       } else {
         next(err);
       }
@@ -37,11 +37,10 @@ const createUser = (req, res, next) => {
           if (err.code === 11000) {
             throw new DuplicateError('Пользователь с таким email уже существует');
           } else if (err.name === 'ValidationError') {
-            throw new BadRequestError('Переданы некорректные данные');
-          } else {
-            next(err);
+            next(new BadRequestError('Переданы некорректные данные'));
           }
-        });
+        })
+        .catch(next);
     });
 };
 
@@ -81,7 +80,7 @@ const getCurrentUser = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'NotFound') {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        next(new NotFoundError('Запрашиваемый пользователь не найден'));
       } else {
         next(err);
       }
@@ -101,7 +100,7 @@ const updateProfile = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        next(new NotFoundError('Запрашиваемый пользователь не найден'));
       } else {
         next(err);
       }
@@ -121,7 +120,7 @@ const updateAvatar = (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        next(new NotFoundError('Запрашиваемый пользователь не найден'));
       } else {
         next(err);
       }
