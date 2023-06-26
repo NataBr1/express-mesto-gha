@@ -34,11 +34,12 @@ const createUser = (req, res, next) => {
       User.create({ ...req.body, password: hashedPassword })
         .then((user) => res.status(201).send({ data: user }))
         .catch((err) => {
-          if (err.name === 'ValidationError') {
-            throw new BadRequestError('Переданы некорректные данные');
-          } else if (err.code === 11000) {
+          if (err.code === 11000) {
             throw new DuplicateError('Пользователь с таким email уже существует');
+          } else if (err.name === 'ValidationError') {
+            throw new BadRequestError('Переданы некорректные данные');
           }
+          next(err);
         })
         .catch(next);
     });
