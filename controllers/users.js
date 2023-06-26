@@ -39,7 +39,6 @@ const createUser = (req, res, next) => {
           } else if (err.code === 11000) {
             throw new DuplicateError('Пользователь с таким email уже существует');
           }
-          next(err);
         })
         .catch(next);
     });
