@@ -37,7 +37,7 @@ const createUser = (req, res, next) => {
           if (err.code === 11000) {
             throw new DuplicateError('Пользователь с таким email уже существует');
           } else if (err.name === 'ValidationError') {
-            next(new BadRequestError('Переданы некорректные данные'));
+            throw new BadRequestError('Переданы некорректные данные');
           } else {
             next(err);
           }

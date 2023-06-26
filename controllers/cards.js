@@ -54,8 +54,9 @@ const likeCard = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -75,8 +76,9 @@ const dislikeCard = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.message === 'Not Found') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
