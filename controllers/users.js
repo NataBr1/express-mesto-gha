@@ -38,11 +38,11 @@ const createUser = (req, res, next) => {
             throw new DuplicateError('Пользователь с таким email уже существует');
           } else if (err.name === 'ValidationError') {
             throw new BadRequestError('Переданы некорректные данные');
+          } else {
+            next(err);
           }
-          next(err);
         });
-    })
-    .catch(next);
+    });
 };
 
 const login = (req, res, next) => {
