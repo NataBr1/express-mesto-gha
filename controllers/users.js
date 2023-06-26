@@ -40,9 +40,9 @@ const createUser = (req, res, next) => {
             throw new BadRequestError('Переданы некорректные данные');
           }
           next(err);
-        })
-        .catch(next);
-    });
+        });
+    })
+    .catch(next);
 };
 
 const login = (req, res, next) => {
