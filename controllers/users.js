@@ -73,7 +73,8 @@ const login = (req, res, next) => {
           }
         })
         .catch(next);
-    });
+    })
+    .catch(next);
 };
 
 const getCurrentUser = (req, res, next) => {
