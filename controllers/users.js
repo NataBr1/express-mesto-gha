@@ -71,9 +71,9 @@ const login = (req, res, next) => {
           } else {
             throw new AuthError('Необходимо авторизоваться');
           }
-        });
-    })
-    .catch(next);
+        })
+        .catch(next);
+    });
 };
 
 const getCurrentUser = (req, res, next) => {
